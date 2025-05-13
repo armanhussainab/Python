@@ -1,0 +1,159 @@
+@author: Arman
+"""
+import pandas as pd
+import numpy as np
+from scipy.stats import skew, kurtosis, mode
+
+
+# Load the dataset
+df = pd.read_csv('E:/BI Analyst/Stat+Python/Concrete_Data - Sheet1.csv')
+
+
+# Initialize a dictionary to store the results
+results = {}
+
+
+# Loop through each column (feature) in the dataset
+for column in df.columns:
+    data = df[column]
+    
+    # Calculate the required statistics
+    mean = np.mean(data)
+    median = np.median(data)
+    
+    # Calculate mode safely
+    try:
+        mode_val = mode(data).mode
+        if isinstance(mode_val, np.ndarray):
+            mode_val = mode_val[0]
+    except:
+        mode_val = np.nan  # If no mode exists, set it to NaN
+    
+    range_val = np.max(data) - np.min(data)
+    variance = np.var(data, ddof=1)  # ddof=1 for sample variance
+    std_dev = np.std(data, ddof=1)
+    q75, q25 = np.percentile(data, [75, 25])
+    iqr = q75 - q25
+    skewness = skew(data)
+    kurt = kurtosis(data)
+    
+    # Store the results in the dictionary
+    results[column] = {
+        'Mean': mean,
+        'Median': median,
+        'Mode': mode_val,
+        'Range': range_val,
+        'Variance': variance,
+        'Standard Deviation': std_dev,
+        'Inter-Quartile Range': iqr,
+        'Skewness': skewness,
+        'Kurtosis': kurt
+    }
+
+
+# Convert the results to a DataFrame for better visualization
+results_df = pd.DataFrame(results).T
+print(results_df)
+
+
+
+
+
+
+
+
+
+
+2) Explanation of all the features:
+
+
+Cement (Component 1)
+* The mean and median are similar, meaning the data is balanced.
+* The values are spread out moderately around the average.
+* The distribution is symmetrical and close to normal.
+Blast Furnace Slag (Component 2)
+* The mean is higher than the median, showing a right-skewed (positively skewed) distribution.
+* The data points are widely spread.
+* The distribution has a heavier tail on the right.
+Fly Ash (Component 3)
+* The mean and median are close, showing a balanced distribution.
+* The data points stay close to the average.
+* The distribution is symmetrical and normal.
+Water (Component 4)
+* The mean and median are similar, meaning the data is balanced.
+* The values are moderately spread out around the average.
+* The distribution is symmetrical and normal.
+Superplasticizer (Component 5)
+* The mean is higher than the median, showing a right-skewed distribution.
+* The data points are widely spread.
+* The distribution has a heavier tail on the right.
+Coarse Aggregate (Component 6)
+* The mean and median are similar, meaning the data is balanced.
+* The values are moderately spread out.
+* The distribution is symmetrical and normal.
+Fine Aggregate (Component 7)
+* The mean and median are similar, showing a balanced distribution.
+* The values are moderately spread out.
+* The distribution is symmetrical and normal.
+Age (Days)
+* The mean is higher than the median, showing a right-skewed distribution.
+* The data points are widely spread.
+* The distribution has a heavier tail on the right.
+Concrete Compressive Strength (MPa)
+* The mean and median are similar, showing a balanced distribution.
+* The values are moderately spread out.
+* The distribution is symmetrical and normal.
+
+
+
+
+3)Visualization of Distributions
+Histograms
+
+
+#%%
+import matplotlib.pyplot as plt
+
+
+# Plot histograms for each feature
+df.hist(bins=30, figsize=(15, 10))
+plt.suptitle('Histograms of Features')
+plt.show()
+
+
+
+
+
+
+Scatterplots
+#%%
+# Scatter plot between Cement and Concrete compressive strength
+plt.scatter(df['Cement (component 1)(kg in a m^3 mixture)'], df['Concrete compressive strength(MPa, megapascals) '])
+plt.title('Scatter Plot: Cement vs Concrete Compressive Strength')
+plt.xlabel('Cement (kg/m^3)')
+plt.ylabel('Concrete Compressive Strength (MPa)')
+plt.show()
+
+
+Boxplot
+#%%
+# Boxplot for Concrete compressive strength
+plt.boxplot(df['Concrete compressive strength(MPa, megapascals) '])
+plt.title('Boxplot: Concrete Compressive Strength')
+plt.ylabel('Concrete Compressive Strength (MPa)')
+plt.show()
+
+
+Explanation of all diagrams:
+Histogram
+* Cement, Water, Coarse Aggregate, Fine Aggregate: These features show a roughly normal distribution, with most data points clustered around the mean.
+* Blast Furnace Slag, Superplasticizer, Age: These features show a right-skewed distribution, with a long tail on the right side.
+* Concrete compressive strength: This feature shows a roughly normal distribution, with most data points clustered around the mean.
+
+
+Scatterplots: 
+* Cement vs Concrete Compressive Strength: There is a positive correlation between cement content and concrete compressive strength.
+
+
+Boxplots:
+* Concrete Compressive Strength: The boxplot shows a symmetric distribution with a few outliers on the higher end.
