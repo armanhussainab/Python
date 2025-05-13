@@ -1,0 +1,186 @@
+arman
+Part 1: Simple Random Sampling
+a)
+import pandas as pd
+import numpy as np
+from scipy import stats
+
+
+# Load the dataset
+data = pd.read_csv("E:/BI Analyst/Stat+Python/garments_worker_productivity_updated - garments_worker_productivity_updated.csv")
+
+
+# Extract the columns
+wip = data['wip'].dropna()  # Drop NaN values
+over_time = data['over_time'].dropna()
+
+
+# Create samples
+np.random.seed(42) 
+ # For reproducibility
+wip_sample_1 = np.random.choice(wip, 20, replace=False)
+wip_sample_2 = np.random.choice(wip, 20, replace=False)
+over_time_sample_1 = np.random.choice(over_time, 20, replace=False)
+over_time_sample_2 = np.random.choice(over_time, 20, replace=False)
+
+
+# Function to calculate statistics
+def calculate_statistics(sample):
+    try:
+        mode_value = stats.mode(sample)[0][0]  # Try to calculate mode
+    except IndexError:
+        mode_value = None  # If no mode is found, set to None
+
+
+    stats_dict = {
+        'Mean': np.mean(sample),
+        'Median': np.median(sample),
+        'Mode': mode_value,  # Use the mode value (or None)
+        'Range': np.ptp(sample),
+        'Variance': np.var(sample, ddof=1),
+        'Standard Deviation': np.std(sample, ddof=1),
+        'Inter-quartile Range': stats.iqr(sample),
+        'Skewness': stats.skew(sample),
+        'Kurtosis': stats.kurtosis(sample)
+    }
+    return stats_dict
+
+
+# Calculate statistics for all samples
+samples = {
+    'wip_sample_1': wip_sample_1,
+    'wip_sample_2': wip_sample_2,
+    'over_time_sample_1': over_time_sample_1,
+    'over_time_sample_2': over_time_sample_2
+}
+statistics = {sample: calculate_statistics(samples[sample]) for sample in samples}
+# Display the statistics
+for sample, stats_dict in statistics.items():
+    print(f"Statistics for {sample}:")
+    for stat, value in stats_dict.items():
+        print(f"{stat}: {value}")
+    print()
+
+
+b) Comparing Two "WIP" Samples
+* Mean & Median: Close values suggest symmetry; large differences indicate skewness.
+* Variance & Standard Deviation: Higher values mean more variability.
+* Skewness: Positive = right tail longer; Negative = left tail longer.
+* Kurtosis: High = heavy tails; Low = light tails.
+Similar stats suggest the samples come from the same distribution; differences indicate variability or sampling issues.
+c)  Comparing the Measurements of Two Samples of "over_time"
+* Mean and Median: These will help us understand the central tendency of the data.
+* Variance and Standard Deviation: These will show how spread out the overtime values are.
+* Skewness and Kurtosis: These will help us understand the shape of the distribution.
+If the statistics for the two "over_time" samples are similar, it suggests that the samples are drawn from the same distribution. If they differ, it could indicate variability in the data or that the samples are not representative of the entire dataset.
+Part 2: Stratified Random Sampling
+a. Stratified Sampling by Quarter
+# Stratified sampling by quarter
+quarters = data['quarter'].unique()  # Get unique quarters
+sample_size_per_quarter = 25  # 25% of 100
+quarter_samples = []
+
+
+for quarter in quarters:
+    quarter_data = data[data['quarter'] == quarter]  # Filter data for the quarter
+    sample = quarter_data.sample(n=sample_size_per_quarter, random_state=42)  # Random sample
+    quarter_samples.append(sample)
+
+
+# Combine the samples
+stratified_sample_by_quarter = pd.concat(quarter_samples)
+
+
+# Display the sample
+print("Stratified Sample by Quarter (100 values):")
+print(stratified_sample_by_quarter[['quarter']].value_counts())  # Verify counts
+
+
+b. Stratified Sampling by Day
+# Stratified sampling by day
+days = data['day'].unique()  # Get unique days
+sample_size_per_day = 10  # 10 values per day
+day_samples = []
+
+
+for day in days:
+    day_data = data[data['day'] == day]  # Filter data for the day
+    sample = day_data.sample(n=sample_size_per_day, random_state=42)  # Random sample
+    day_samples.append(sample)
+
+
+# Combine the samples
+stratified_sample_by_day = pd.concat(day_samples)
+
+
+# Display the sample
+print("\nStratified Sample by Day (60 values):")
+print(stratified_sample_by_day[['day']].value_counts())  # Verify counts
+
+
+
+
+Part 3: Linear Systematic Sampling
+1.  
+# Function for linear systematic sampling
+def systematic_sampling(data, sample_size):
+    N = len(data)  # Population size
+    k = N // sample_size  # Sampling interval
+    start = np.random.randint(0, k)  # Random start point
+    indices = np.arange(start, N, k)[:sample_size]  # Systematic sampling indices
+    sample = data.iloc[indices]  # Extract sample
+    return sample
+
+
+# Create systematic samples
+wip_sys_sample_1 = systematic_sampling(wip, 20)
+wip_sys_sample_2 = systematic_sampling(wip, 20)
+over_time_sys_sample_1 = systematic_sampling(over_time, 20)
+over_time_sys_sample_2 = systematic_sampling(over_time, 20)
+
+
+# Display the samples
+print("Systematic Samples:")
+print("wip_sys_sample_1:\n", wip_sys_sample_1)
+print("wip_sys_sample_2:\n", wip_sys_sample_2)
+print("over_time_sys_sample_1:\n", over_time_sys_sample_1)
+print("over_time_sys_sample_2:\n", over_time_sys_sample_2)
+
+
+2. Systematic Samples
+# Calculate statistics for systematic samples
+sys_samples = {
+    'wip_sys_sample_1': wip_sys_sample_1,
+    'wip_sys_sample_2': wip_sys_sample_2,
+    'over_time_sys_sample_1': over_time_sys_sample_1,
+    'over_time_sys_sample_2': over_time_sys_sample_2
+}
+
+
+sys_statistics = {sample: calculate_statistics(sys_samples[sample]) for sample in sys_samples}
+
+
+# Display the statistics
+for sample, stats_dict in sys_statistics.items():
+    print(f"Statistics for {sample}:")
+    for stat, value in stats_dict.items():
+        print(f"{stat}: {value}")
+    print()
+c. Compare Measurements of Two "wip" Samples
+We will compare the statistics of wip_sys_sample_1 and wip_sys_sample_2:
+* Mean and Median: If they are close, the distribution is symmetric. If not, it may be skewed.
+* Variance and Standard Deviation: These measure the spread of the data.
+* Skewness and Kurtosis: These describe the shape of the distribution.
+If the statistics are similar, the samples are likely drawn from the same distribution. If they differ, it could indicate variability in the data or sampling bias.
+d. Compare Measurements of Two "over_time" Samples
+We will repeat the same analysis for over_time_sys_sample_1 and over_time_sys_sample_2:
+* Compare the mean, median, variance, skewness, and kurtosis.
+* Determine if the samples are representative of the population.
+e. Comparison of Sampling Methods
+After using both simple random sampling and linear systematic sampling, we can compare the two methods:
+1. Simple Random Sampling:
+   * Pros: Easy to implement, unbiased, and each element has an equal chance of being selected.
+   * Cons: May not capture the structure of the population (e.g., clusters or patterns).
+2. Linear Systematic Sampling:
+   * Pros: Ensures even coverage of the population, especially if the data is ordered or periodic.
+   * Cons: Risk of bias if there is a hidden pattern or periodicity in the data.
