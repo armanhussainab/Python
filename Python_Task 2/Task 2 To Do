@@ -1,0 +1,9 @@
+1. Find the following information of all the features: 
+Mean, Median, Mode, Range, Variance, Standard deviation, Inter-quartile range, skewness and
+kurtosis.
+Bonus point: If you use for loop to obtain all the values.
+2. Explain all the features whether each feature shows what kind of characteristics based on the
+measures you got from question 01. This must include the characteristics such as their central
+tendency, spread, and shape of the data. 
+3. Draw figure of the distributions of all the features such as histogram, scatter plot, boxplot and explain
+the diagrams.
