@@ -1,0 +1,33 @@
+
+Part 1: Simple Random Sampling 
+a. Take two columns, “wip” and “over_time”. Create two samples of 20 values each for both columns.
+Name them “wip_sample_1”, “wip_sample_2”, “over_time_sample_1”, “over_time_sample_2”.
+There will be 4 samples with in total 80 values. Find the following information of all the samples:
+Mean, Median, Mode, Range, Variance, Standard deviation, Inter-quartile range, skewness and
+kurtosis.
+Bonus point: If you use for loop to obtain all the values.
+b. Compare the measurements of two samples of “wip”. What type of difference you see between
+these two samples? Are the measurements same for two samples? If not, then explain their data
+distributions.
+c. Repeat the task “b” for two samples of “over_time”, do the same analysis.
+
+Part 2: Stratified Random Sampling 
+a. As you can see, there are four quarters in the column “quarter”. Use stratified random sampling
+and create a sample of 100 values where 25% of all the samples must come from each quarter.
+b. As you can see, garments worker work from Saturday to Thursday, 6 days. Use stratified random
+sampling and create a sample of 60 values where exactly 10 values must come from each day.
+
+Part 3: Linear systematic sampling 
+a. Similar to part 1 of the task list, take two columns, “wip” and “over_time”. Create two samples of
+20 values each for both columns. Name them “wip_sys_sample_1”, “wip_sys_sample_2”,
+“over_time_sys_sample_1”, “over_time_sys_sample_2” by using Linear systematic sampling.
+b. Find the following information of all the samples:
+Mean, Median, Mode, Range, Variance, Standard deviation, Inter-quartile range, skewness and
+kurtosis.
+c. Compare the measurements of two samples of “wip”. What type of difference you see between
+these two samples? Are the measurements same for two samples? If not, then explain their data
+distributions.
+d. Repeat the task “c” for two samples of “over_time”, do the same analysis.
+e. Now the fun part, after using both sampling method (Simple random sampling and Linear
+systematic sampling) on the same data (wip and over_time), which sampling method do you
+prefer? And why?
