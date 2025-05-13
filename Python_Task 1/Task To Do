@@ -1,0 +1,9 @@
+1. Construct a complete “Grouped Frequency Distribution Table” from the “Weight in gms” column.
+2. Construct a “Contingency Table” (Cross-tabulation) between two categorical columns,
+“Warehouse_block” and “Mode_of_Shipment”.
+3. Make graphical representation of the following columns:
+a. Bar chart of “Warehouse_block” and “Product_importance”
+b. Histogram of “Cost_of_the_Product” and “Weight in gms” individually.
+c. Scatter Plot of “Cost_of_the_Product” and “Weight in gms” individually. (take 200 datapoints)
+(range of datapoints are given to you individually)
+4. Explain all plots
