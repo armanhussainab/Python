@@ -1,0 +1,124 @@
+Md Arman Hussain
+
+
+import pandas as pd
+
+
+data = pd.read_csv("E:/BI Analyst/Shipping Dataset - Sheet1.csv")
+
+
+# Define bins for Weight_in_gms
+bins = [1000, 2000, 3000, 4000, 5000, 6000]
+
+
+# Create the grouped frequency distribution table
+frequency_table = pd.cut(data['Weight_in_gms'], bins=bins).value_counts().sort_index()
+
+
+# Print the table
+print("Grouped Frequency Distribution Table for Weight_in_gms:")
+print(frequency_table)
+ 
+
+
+#%%
+
+
+# Create the contingency table
+contingency_table = pd.crosstab(data['Warehouse_block'], data['Mode_of_Shipment'])
+
+
+# Print the table
+print("Contingency Table between Warehouse_block and Mode_of_Shipment:")
+print(contingency_table)
+
+
+#%%
+# Graphical methods
+# bar chart
+import matplotlib.pyplot as plt
+
+
+# plotting the bar chart
+contingency_table.plot(kind='bar',stacked=True, colormap='viridis')
+
+
+# Titles and labels
+plt.title("Mode of Shipment By Warehouse")
+plt.xlabel("Mode of Shipment")
+plt.ylabel("Warehouse Block")
+
+
+# Show the plot
+plt.show()
+
+
+#%%
+#bar chart of warehouse_block and product_importance
+#bar chart
+import seaborn as sns
+
+
+# Create the bar chart
+plt.figure(figsize=(10, 6))
+sns.countplot(x='Warehouse_block', hue='Product_importance', data=data)
+plt.title("Bar Chart of Warehouse_block and Product_importance")
+plt.xlabel("Warehouse Block")
+plt.ylabel("Count")
+plt.xticks(rotation=0)
+plt.legend(title="Product Importance")
+plt.show()
+
+
+#%%
+# Histogram for Cost_of_the_Product
+plt.figure(figsize=(10, 6))
+plt.hist(data['Cost_of_the_Product'], bins=20, color='blue', edgecolor='black')
+plt.title("Histogram of Cost_of_the_Product")
+plt.xlabel("Cost of the Product")
+plt.ylabel("Frequency")
+plt.show()
+
+
+# Histogram for Weight_in_gms
+plt.figure(figsize=(10, 6))
+plt.hist(data['Weight_in_gms'], bins=20, color='green', edgecolor='black')
+plt.title("Histogram of Weight_in_gms")
+plt.xlabel("Weight in grams")
+plt.ylabel("Frequency")
+plt.show()
+
+
+#%%
+# Scatter plot for Cost_of_the_Product vs Weight_in_gms
+plt.figure(figsize=(10, 6))
+plt.scatter(data['Cost_of_the_Product'][:200], data['Weight_in_gms'][:200], color='red')
+plt.title("Scatter Plot of Cost_of_the_Product vs Weight_in_gms")
+plt.xlabel("Cost of the Product")
+plt.ylabel("Weight in grams")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4) Explanation of All plots:
+1.    1. Bar Chart of "Warehouse_block" and "Product_importance":
+      1. This plot shows the distribution of product importance levels across different warehouse blocks.
+      2. It helps identify which warehouse handles more high/medium/low importance products.
+   2. Histogram of "Cost_of_the_Product" and "Weight_in_gms":
+      1. These histograms show the distribution of the cost and weight of products.
+      2. They help identify whether the data is normally distributed, skewed, or has outliers.
+   3. Scatter Plot of "Cost_of_the_Product" and "Weight_in_gms":
+      1. This plot shows the relationship between the cost and weight of products.
+      2. It helps identify if there is any correlation 
+   *
